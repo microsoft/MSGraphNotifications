@@ -1,5 +1,13 @@
+# Microsoft Graph notifications SDK
+Using the new and improved, lightweight Microsoft Graph notifications client SDK within your application, you can update the state of a notification and sync that state across all endpoints. With the client-side SDK, your app will initiate a subscription with the Microsoft Graph notification service.  This allows your app to start receiving notifications that are published by your application server & targeted at the currently signed-in user. The SDK then manages the notifications on the client side, including receiving new incoming notifications, managing the state of notifications for scenarios like universal dismiss, as well as retrieving full notification history.
 
-# Contributing
+> [!NOTE]
+> The preview version of the Web SDK is now available and we welcome your feedback. The client SDKs for Windows, iOS and Android platforms are coming shortly so please check back soon for updates. In the meantime, you can alternatively target these platforms using the cross-device, [Project Rome SDK](https://developer.microsoft.com/en-us/windows/project-rome).
+
+## Privacy
+See [Microsoft's privacy statement](https://privacy.microsoft.com/en-us/privacystatement/) for more information.
+
+## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us

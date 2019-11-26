@@ -10,7 +10,7 @@
     <script type="text/javascript" src="https://alcdn.msftauth.net/lib-preview/1.2.0.3/js/msal.min.js"></script>
     <button id="SignIn" onclick="signIn()">Sign In</button>
 </head>
-<script>
+<script type="text/javascript">
     // config for msal
     var msalConfig = {
         auth: {
@@ -25,18 +25,16 @@
     };
 
     // scopes
-    const aadScopes = ["https://activity.microsoft.com/useractivity.readwrite.createdbyapp"];
+    var aadScopes = ["https://activity.microsoft.com/useractivity.readwrite.createdbyapp"];
 
     var requestObj = {
         scopes: aadScopes
     };
 
     // Please enter the domain name that is registered and verified with the App Service ID in Dev portal
-    let crossDeviceAppId = "<PleaseEnterValue>";
+    var crossDeviceAppId = "<PleaseEnterValue>";
 
     var myMSALObj = new Msal.UserAgentApplication(msalConfig);
-    // Register Callbacks for redirect flow
-    // myMSALObj.handleRedirectCallbacks(acquireTokenRedirectCallBack, acquireTokenErrorRedirectCallBack);
     myMSALObj.handleRedirectCallback(authRedirectCallBack);
 
     function signIn() {
@@ -51,6 +49,7 @@
             console.log(error);
         });
     }
+
     async function signOut() {
         try {
             console.log("unsubscribe");
@@ -136,36 +135,6 @@
             errorCode === "login_required";
     }
 
-    // Browser check variables
-    var ua = window.navigator.userAgent;
-    var msie = ua.indexOf('MSIE ');
-    var msie11 = ua.indexOf('Trident/');
-    var msedge = ua.indexOf('Edge/');
-    var isIE = msie > 0 || msie11 > 0;
-    var isEdge = msedge > 0;
-    // If you support IE, our recommendation is that you sign-in using Redirect APIs
-    // If you as a developer are testing using Edge InPrivate mode, please add "isEdge" to the if check
-    // can change this to default an experience outside browser use
-    var loginType = isIE ? "REDIRECT" : "POPUP";
-    // runs on page load, change config to try different login types to see what is best for your application
-    if (loginType === 'POPUP') {
-        if (myMSALObj.getAccount()) {// avoid duplicate code execution on page load in case of iframe and popup window.
-            showWelcomeMessage();
-            acquireTokenPopupAndStoreAccessToken();
-        }
-    }
-    else if (loginType === 'REDIRECT') {
-        document.getElementById("SignIn").onclick = function () {
-            myMSALObj.loginRedirect(requestObj);
-        };
-        if (myMSALObj.getAccount() && !myMSALObj.isCallback(window.location.hash)) {// avoid duplicate code execution on page load in case of iframe and popup window.
-            showWelcomeMessage();
-            acquireTokenRedirectAndCallMSGraph();
-        }
-    } else {
-        console.error('Please set a valid login type');
-    }
-
     // Refreshes the token.
     // In case it did not expire it will retrieve it from cache otherwise will make a network call.
     // In case of a network call it tries silently first (i.e.: no prompt is shown)
@@ -180,17 +149,48 @@
         await bundle.subscribe(crossDeviceAppId);
     }
 
+    window.addEventListener('load', function() {
+        // Browser check variables
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf('MSIE ');
+        var msie11 = ua.indexOf('Trident/');
+        var msedge = ua.indexOf('Edge/');
+        var isIE = msie > 0 || msie11 > 0;
+        var isEdge = msedge > 0;
+        // If you support IE, our recommendation is that you sign-in using Redirect APIs
+        // If you as a developer are testing using Edge InPrivate mode, please add "isEdge" to the if check
+        // can change this to default an experience outside browser use
+        var loginType = isIE ? "REDIRECT" : "POPUP";
+        // runs on page load, change config to try different login types to see what is best for your application
+        if (loginType === 'POPUP') {
+            if (myMSALObj.getAccount()) {// avoid duplicate code execution on page load in case of iframe and popup window.
+                showWelcomeMessage();
+                acquireTokenPopupAndStoreAccessToken();
+            }
+        }
+        else if (loginType === 'REDIRECT') {
+            document.getElementById("SignIn").onclick = function () {
+                myMSALObj.loginRedirect(requestObj);
+            };
+            if (myMSALObj.getAccount() && !myMSALObj.isCallback(window.location.hash)) {// avoid duplicate code execution on page load in case of iframe and popup window.
+                showWelcomeMessage();
+                acquireTokenRedirectAndCallMSGraph();
+            }
+        } else {
+            console.error('Please set a valid login type');
+        }
+    });
 </script>
 
 <body>
     <p id="WelcomeMessage">Welcome to Graph Notifications!</p>
-    <button id="permission-btn" onclick="subscribeToUserNotificationsAsync()">Subscribe</button>
-    <button id="permission-btn" onclick="bundle.getAllNotificationsAsync()">Get all activities</button>
-    <button id="permission-btn3" onclick="bundle.updateNotificationReadStateAsync()">Update read state</button>
-    <button id="permission-btn4" onclick="bundle.updateNotificationUserActionStateAsync()">Update user action state</button>
-    <button id="permission-btn5" onclick="bundle.deleteNotificationAsync()">Delete notificaiton</button>
-    <button id="permission-btn6" onclick="bundle.unsubscribeFromUserNotificationsAsync()">Unsubscribe</button>
-    <button id="permission-btn9" onclick="refresh()">Refresh token</button>
+    <button onclick="subscribeToUserNotificationsAsync()">Subscribe</button>
+    <button onclick="bundle.getAllNotificationsAsync()">Get all notifications</button>
+    <button onclick="bundle.updateNotificationReadStateAsync()">Update read state</button>
+    <button onclick="bundle.updateNotificationUserActionStateAsync()">Update user action state</button>
+    <button onclick="bundle.deleteNotificationAsync()">Delete notification</button>
+    <button onclick="bundle.unsubscribeFromUserNotificationsAsync()">Unsubscribe</button>
+    <button onclick="refresh()">Refresh token</button>
 
 </body>
 

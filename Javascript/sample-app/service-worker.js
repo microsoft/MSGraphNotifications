@@ -45,33 +45,51 @@ self.addEventListener('push', (event) => {
         console.log(JSON.stringify(processedPushNotification));
         console.log(processedPushNotification);
 
-        // show the notification
-        const title = 'Notification received';
-        let options = {
-            body: "sample"
-        };
 
         if (!processedPushNotification.isUserNotificationPush) {
-            console.error("it was not a user notification. dont show notification")
+            console.error("not a push from Graph notification server. don't show notification pop-up");
             return;
         }
 
-        if (processedPushNotification.userNotifications.length === 0){
-            console.log("received 0 user notifications. dont show notification");
+        if (processedPushNotification.userNotifications.length === 0) {
+            console.log("push contains 0 Graph notifications. don't show notification pop-up");
             return;
         }
 
+        // prepare the pop-up notification's text
+        let title = 'Notification received';
+        let body = 'sample';
         if (processedPushNotification.status !== userNotificationsClient.UserNotificationApiResultStatus.Succeeded) {
-            options = {
-                body: "there were problems when parsing or fetching. Open the Dev Tools -> Console for more details!"
-            };
+            body = "there were problems when parsing or fetching. Open the Dev Tools -> Console for more details!";
         } else {
-            options = {
-                body: processedPushNotification.userNotifications[0].payload.rawContent || "there were some problems. Open the console for more details!"
-            };
+            // sort the notifications from latest to earliest last-modified time
+            let notifications = processedPushNotification.userNotifications.slice();
+            notifications.sort((a, b) => {
+                // lastModifiedDateTime is null when the notification has not been
+                // modified since creation
+                let aTime = a.lastModifiedDateTime || a.creationDateTime;
+                let bTime = b.lastModifiedDateTime || b.creationDateTime;
+
+                if (aTime < bTime) { return 1; }
+                else if (aTime > bTime) { return -1; }
+                else { return 0; }
+            });
+
+            // display the content of the most recently created notification
+            let latestNotification = notifications[0];
+            let payload = latestNotification.payload;
+            if (payload.rawContent != null) {
+                body = payload.rawContent;
+            } else if (payload.title != null && payload.body != null) {
+                title = payload.title;
+                body = payload.body;
+            } else {
+                body = "there were some problems. Open the console for more details!";
+            }
         }
 
-        await registration.showNotification(title, options);
+        // show the pop-up notification
+        await registration.showNotification(title, { body });
     })());
 });
 
@@ -80,7 +98,7 @@ self.addEventListener('push', (event) => {
  * This is called when the displayed notification is clicked.
  */
 self.addEventListener('notificationclick', async function (event) {
-    console.info('notificaton clicked', event.notification.body);
+    console.info('notification clicked: ', event.notification.body, event.notification.title);
 
     event.notification.close();
 });

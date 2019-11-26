@@ -12,18 +12,18 @@
 1. ``npm run build``
 
 ### Running the sample
-1. Build the sample (if is not built already)
+1. Build the sample (if is not built already).
 1. Add the reply url ``http://localhost:8080/authreply.html`` (please see [this](https://github.com/AzureAD/microsoft-authentication-library-for-js/wiki/MSAL-JS:-1.2.0-beta.0#feature-iframes-support-and-performance-enhancements) for more details about the empty page for the reply url) to the redirect URIs list within the Authentication page of your Azure Active Directory client app registration.
 1. Set the following values:
    - ``msalConfig.auth.clientId`` in index.html: this is the client ID of your Azure AD client app
    - `crossDeviceAppId` in index.html: this is the "cross-device domain name" that you have registered
      and verified in your Cross-Device App registration in Partner Center (https://partner.microsoft.com/dashboard )
-1. Open command prompt, powershell, or git for windows and start the http-server (by running ``http-server``) within the folder of the sample app (i.e.: ~/repository-source-path/sample-app)
-1. Open the page ``http://localhost:8080/index.html`` (check the port with the one given by http-server)
+1. Open command prompt, powershell, or git for windows and start the http-server (by running ``http-server``) within the folder of the sample app (i.e.: ~/repository-source-path/sample-app).
+1. Open the page ``http://localhost:8080/index.html`` (check the port with the one given by http-server).
    - if the port is other than 8080 the 2nd step needs to be redone with the new given port. 
    - don't go to `http://localhost:8080/` without `index.html`, as that doesn't work
      in http-server.
-1. Sign in with an Azure AD account
+1. Sign in with an Azure AD account.
    - see "Login with a personal Microsoft account (MSA)" below if you want to use that
      form of account.
 1. Click Subscribe, then click Allow on the Chrome browser prompt regarding notification permission.

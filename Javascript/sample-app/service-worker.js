@@ -37,26 +37,32 @@ self.addEventListener('push', (event) => {
         let payloadText = event.data != null ? event.data.text() : "";
         console.debug("service-worker push notification received!", payloadText);
 
-        // call the sdk to proces the push notification
-        console.debug("call sdk to process the push notification");
+        // call the sdk to process the push notification
+        console.debug("calling Microsoft Graph notifications client SDK to process the push notification");
         let processedPushNotification = await userNotificationApiImpl.processPushNotificationAsync(payloadText);
 
         // print to console the result
         console.log(JSON.stringify(processedPushNotification));
         console.log(processedPushNotification);
 
-
         if (!processedPushNotification.isUserNotificationPush) {
-            console.error("not a push from Graph notification server. don't show notification pop-up");
+            console.error("not a push from Microsoft Graph notifications server. don't show notification pop-up");
             return;
         }
 
         if (processedPushNotification.userNotifications.length === 0) {
-            console.log("push contains 0 Graph notifications. don't show notification pop-up");
+            console.log("push contains 0 Microsoft Graph notifications. don't show notification pop-up");
             return;
         }
 
-        // prepare the pop-up notification's text
+        // Display the most recently modified Microsoft Graph notification
+        // in this push as the pop-up notification's text, if available.
+        //
+        // Note: there may be additional Graph notifications corresponding to this push,
+        // and/or duplicate Graph notifications from a previous push. Both will be ignored.
+        // In your application, you may wish to pop-up notifications for all Graph notifications,
+        // and cache previously seen Graph notifications to avoid popping up duplicate pop-ups.
+        //
         let title = 'Notification received';
         let body = 'sample';
         if (processedPushNotification.status !== userNotificationsClient.UserNotificationApiResultStatus.Succeeded) {
@@ -75,7 +81,7 @@ self.addEventListener('push', (event) => {
                 else { return 0; }
             });
 
-            // display the content of the most recently created notification
+            // extract and use the content of the most recently modified notification
             let latestNotification = notifications[0];
             let payload = latestNotification.payload;
             if (payload.rawContent != null) {

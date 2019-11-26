@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+      "target": "es5",
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "lib": [ "es2015", "es2015.promise", "dom" ]                           /* Enable all strict type-checking options. */
+    },
+    "files": ["./register.ts"]
+  }

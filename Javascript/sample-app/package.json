@@ -1,0 +1,21 @@
+{
+  "name": "consume_package_1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "postinstall": "copy .\\node_modules\\@microsoft\\user-notifications-client\\dist\\graph-notifications-library.js ."
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "ts-loader": "^6.1.2",
+    "typescript": "^3.6.3",
+    "webpack": "^4.40.2",
+    "webpack-cli": "^3.3.9"
+  },
+  "dependencies": {
+    "@microsoft/user-notifications-client": "^0.1.7"
+  }
+}

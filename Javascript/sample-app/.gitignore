@@ -1,0 +1,4 @@
+node_modules
+dist/
+# it will be added by build scripts. is needed by service worker
+graph-notifications-library.js

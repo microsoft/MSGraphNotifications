@@ -3,6 +3,9 @@ Using the new and improved, lightweight Microsoft Graph notifications client SDK
 
 > **Note:** The preview version of the Web SDK is now available and we welcome your feedback. The client SDKs for Windows, iOS and Android platforms are coming shortly so please check back soon for updates. In the meantime, you can alternatively target these platforms using the cross-device, [Project Rome SDK](https://developer.microsoft.com/en-us/windows/project-rome).
 
+## [Documentation wiki](https://github.com/microsoft/MSGraphNotifications/wiki)
+Learn more about how to use the Graph notifications client SDK here: https://github.com/microsoft/MSGraphNotifications/wiki
+
 ## Privacy
 See [Microsoft's privacy statement](https://privacy.microsoft.com/en-us/privacystatement/) for more information.
 

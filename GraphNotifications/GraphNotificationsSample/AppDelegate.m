@@ -5,7 +5,6 @@
 #import "AppDelegate.h"
 #import <GraphNotificationsLibrary/UserNotificationApi.h>
 #import <GraphNotificationsLibrary/UserNotification.h>
-#import "UserNotificationApi.h"
 #import "APNSToken.h"
 @implementation AppDelegate {
     
@@ -13,6 +12,7 @@
 
 -(instancetype)init {
     if (self = [super init]) {
+
     }
     return self;
 }
@@ -76,8 +76,7 @@
     [notificationInfo enumerateKeysAndObjectsUsingBlock:^( id _Nonnull key, id _Nonnull obj, __unused BOOL* _Nonnull stop) {
         NSLog(@"%@: %@", key, obj);
     }];
-    UserNotificationApiImpl* impl = [UserNotificationApiImpl UserNotificationApiImpl];
-    [impl.userNotificationApi processPushNotificationAsync:notificationInfo completionHandler:^(ProcessPushNotificationResult *result) {
+    [self.manager.userNotificationApi processPushNotificationAsync:notificationInfo completionHandler:^(ProcessPushNotificationResult *result) {
         if(result.isUserNotificationPush)
         {
             [self.manager _handleNotifications:result.userNotifications];

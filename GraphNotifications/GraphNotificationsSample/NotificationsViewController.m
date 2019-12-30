@@ -6,7 +6,6 @@
 #import "NotificationsViewController.h"
 #import "NotificationsManager.h"
 #import <GraphNotificationsLibrary/GraphNotificationsLibrary.h>
-#import "UserNotificationApi.h"
 #import "AppDelegate.h"
 @implementation NotificationsViewController {
     NotificationsManager* _notificationsManager;

@@ -8,15 +8,14 @@ target 'GraphNotificationsSample' do
     
     # This is the main ConnectedDevices SDK. It includes all the functionality needed for RemoteSystems and UserData scenarios
     pod 'GraphNotificationsLibrary', '~>0.0.6'
-    
+    pod 'MSAL'
     # Because the ConnectedDevices platform involves many asynchronous calls (getting user tokens, sending messages to remote apps etc.)
     # it is helpful to have a strategy to sequence all of the completions in an organized manner. https://blog.hellojs.org/asynchronous-javascript-from-callback-hell-to-async-and-await-9b9ceb63c8e8
     pod 'PromiseKit'
     pod 'AdaptiveCards'
-    
-    # To help authenticate users, the ADAL library is used
-    pod 'ADAL', '2.6.6'
-    
+
+
+        
     # force the sub specs in the array below to use swift version 3.2
     # https://github.com/mxcl/PromiseKit/issues/722
     post_install do |installer| 

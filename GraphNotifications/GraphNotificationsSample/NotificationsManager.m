@@ -2,7 +2,6 @@
 //  Copyright (c) Microsoft Corporation. All rights reserved.
 //
 
-#import "UserNotificationApi.h"
 #import "NotificationsManager.h"
 #import <UserNotifications/UserNotifications.h>
 #import "Secrets.h"
@@ -98,9 +97,9 @@
         _notifications = [NSMutableArray array];
         _listenerValue = 0;
         _listenerMap = [NSMutableDictionary dictionary];
-        UserNotificationApiImpl* impl = [UserNotificationApiImpl UserNotificationApiImpl];
-        [impl.userNotificationApi setOAuthAccessToken:accountId];
-        [impl subscribeToUserNotificationsAsync:[[APNSToken accessToken] getAccessToken] appPackageNameForPushPlatform:@"GraphNotificationsSample" appDisplayNameForUnsAnalytics:@"GraphNotificationsSample" completionHandler:^(UserNotificationSubscriptionResult * result) {
+        _userNotificationApi =  [[UserNotificationApi alloc] init];
+        [_userNotificationApi setOAuthAccessToken:accountId];
+        [_userNotificationApi subscribeToUserNotificationsAsync:[[APNSToken accessToken] getAccessToken] appPackageNameForPushPlatform:APP_HOST_NAME appDisplayNameForUnsAnalytics:@"GraphNotificationsSample" completionHandler:^(UserNotificationSubscriptionResult * result) {
             if(result.getStatus==SUCCEEDED)
             {
                 NSLog(@"Registered for remote notifications successfully");
@@ -131,8 +130,7 @@
 - (void)markRead:(UserNotification*)notification {
     if ([notification getReadStatus] == FALSE) {
         NSLog(@"Marking notification %@ as read", [notification getAppNotificationId]);
-        UserNotificationApiImpl* impl = [UserNotificationApiImpl UserNotificationApiImpl];
-        [impl.userNotificationApi updateNotificationReadStateAsync:[notification getAppNotificationId] readState:TRUE completionHandler:^(BOOL *successResult) {
+        [_userNotificationApi updateNotificationReadStateAsync:[notification getAppNotificationId] readState:TRUE completionHandler:^(BOOL *successResult) {
             if(successResult==FALSE)
             {
                 NSLog(@"Failed to mark the notification as read");
@@ -147,8 +145,7 @@
 
 - (void)deleteNotification:(UserNotification*)notification {
     NSLog(@"Deleting notification %@", [notification getAppNotificationId]);
-    UserNotificationApiImpl* impl = [UserNotificationApiImpl UserNotificationApiImpl];
-    [impl.userNotificationApi deleteNotificationAsync:[notification getAppNotificationId] completionHandler:^(NSDate *Date) {
+    [_userNotificationApi deleteNotificationAsync:[notification getAppNotificationId] completionHandler:^(NSDate *Date) {
         if(Date)
         {
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -166,8 +163,7 @@
     if ([notification getUserNotificationActionState] == NONE) {
         NSLog(@"Dismissing notification %@", [notification getAppNotificationId]);
         [self dismissNotificationFromTrayWithId:[notification getAppNotificationId]];
-        UserNotificationApiImpl* impl = [UserNotificationApiImpl UserNotificationApiImpl];
-        [impl.userNotificationApi updateNotificationUserActionStateAsync:[notification getAppNotificationId] newUserActionState:ACTIVATED completionHandler:^(BOOL *successResult) {
+        [_userNotificationApi updateNotificationUserActionStateAsync:[notification getAppNotificationId] newUserActionState:ACTIVATED completionHandler:^(BOOL *successResult) {
             if(successResult==TRUE)
             {
                 NSLog(@"Successfully dismissed the notification");

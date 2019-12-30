@@ -12,6 +12,7 @@
 - (instancetype)initWithAccount:(NSString*)accountId;
 
 @property NSMutableArray<UserNotification*>* notifications;
+@property UserNotificationApi* userNotificationApi;
 
 - (NSInteger)addNotificationsChangedListener:(void(^)(void))listener;
 - (void)removeListener:(NSInteger)token;

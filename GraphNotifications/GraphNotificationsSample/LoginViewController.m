@@ -3,7 +3,9 @@
 //
 
 #import "LoginViewController.h"
-
+#import <MSAL/MSAL.h>
+#import "AppDelegate.h"
+#import "Secrets.h"
 typedef NS_ENUM(NSInteger, LoginState) {
     AAD,
     MSA,
@@ -26,42 +28,84 @@ typedef NS_ENUM(NSInteger, LoginState) {
     
     if (state == SIGNED_OUT) {
         [self _setStatusText:@"Signing in MSA..."];
-        /*TODO: sign in with MSAL then
-         [self _setButtonTextAndVisibilityForState:MSA];
-         [self _setState:MSA];
-         AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-         [appdelegate.notificationsManager initWithAccountId];
-         
-         /*
-         
+        NSError* msalError = [[NSError alloc] init];
+        MSALAuthority* authority = [MSALAuthority authorityWithURL:[NSURL URLWithString:@"https://login.microsoftonline.com/consumers/"] error:&msalError];
+        MSALPublicClientApplicationConfig *config = [[MSALPublicClientApplicationConfig alloc] initWithClientId:MSA_CLIENT_ID];
+        NSArray<NSString *> *scopes = @[@"https://activity.microsoft.com/UserActivity.ReadWrite.CreatedByApp", @"https://activity.microsoft.com/Notifications.ReadWrite.CreatedByApp"];
+        MSALWebviewParameters* params = [[MSALWebviewParameters alloc] initWithParentViewController:self];
+        MSALPublicClientApplication *application = [[MSALPublicClientApplication alloc] initWithConfiguration:config error:&msalError];
+        MSALInteractiveTokenParameters *interactiveParams = [[MSALInteractiveTokenParameters alloc] initWithScopes:scopes webviewParameters:params];
+        interactiveParams.authority = authority;
+        interactiveParams.promptType = MSALPromptTypeSelectAccount;
+        
+        [application acquireTokenWithParameters:interactiveParams completionBlock:^(MSALResult *result, NSError *error) {
+            if (!error)
+            {
+                // You'll want to get the account identifier to retrieve and reuse the account
+                // for later acquireToken calls
+                AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                appDelegate.manager = [appDelegate.manager initWithAccount:result.accessToken];
+                if(appDelegate.manager)
+                {
+                    [self _setButtonTextAndVisibilityForState:MSA];
+                    [self _setState:MSA];
+                }
+                else
+                {
+                    [self _setStatusText:[NSString stringWithFormat:@"Initialization of the notifications manager failed!"]];
+                }
+            }
+            else
+            {
+                [self _setStatusText:[NSString stringWithFormat:@"MSA sign-in failed with error %@", error]];
+            }
+        }];
     } else {
-        //TODO: Sign out with MSAL
-        [self _setStatusText:[NSString stringWithFormat:@"Currently signed out"]];
-        [self _setButtonTextAndVisibilityForState:SIGNED_OUT];
-        /* TODO: sign out with MSAL, this is if sign out fails
-        [self _setStatusText:[NSString stringWithFormat:@"MSA sign-out failed!"]];
-         */
+        //NOTE: Sign out is currently not supported in the MSAL library. See the issue here. The token can be removed from the cache but that is not being shown.
+        //https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/issues/589
     }
 }
 
 - (IBAction)loginAAD {
     LoginState state = [self _getState];
-    
+
     if (state == SIGNED_OUT) {
         [self _setStatusText:@"Signing in AAD..."];
-        /*TODO: sign in with MSAL then
-         [self _setButtonTextAndVisibilityForState:AAD];
-         [self _setState:AAD];
-         /*
+        NSError* msalError = [[NSError alloc] init];
+        MSALAuthority* authority = [MSALAuthority authorityWithURL:[NSURL URLWithString:@"https://login.microsoftonline.com/common/oauth2"] error:&msalError];
+        MSALPublicClientApplicationConfig *config = [[MSALPublicClientApplicationConfig alloc] initWithClientId:AAD_CLIENT_ID];
+        NSArray<NSString *> *scopes = @[@"https://activity.microsoft.com/UserActivity.ReadWrite.CreatedByApp", @"https://activity.microsoft.com/Notifications.ReadWrite.CreatedByApp"];
+        MSALWebviewParameters* params = [[MSALWebviewParameters alloc] initWithParentViewController:self];
+        MSALPublicClientApplication *application = [[MSALPublicClientApplication alloc] initWithConfiguration:config error:&msalError];
+        MSALInteractiveTokenParameters *interactiveParams = [[MSALInteractiveTokenParameters alloc] initWithScopes:scopes webviewParameters:params];
+        interactiveParams.authority = authority;
+        interactiveParams.promptType = MSALPromptTypeSelectAccount;
+        
+        [application acquireTokenWithParameters:interactiveParams completionBlock:^(MSALResult *result, NSError *error) {
+            if (!error)
+            {
+                // You'll want to get the account identifier to retrieve and reuse the account
+                // for later acquireToken calls
+                AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                appDelegate.manager = [appDelegate.manager initWithAccount:result.accessToken];
+                if(appDelegate.manager)
+                {
+                    [self _setButtonTextAndVisibilityForState:MSA];
+                    [self _setState:MSA];
+                }
+                else
+                {
+                    [self _setStatusText:[NSString stringWithFormat:@"Initialization of the notifications manager failed!"]];
+                }
+            }
+            else
+            {
+                [self _setStatusText:[NSString stringWithFormat:@"MSA sign-in failed with error %@", error]];
+            }
+        }];
     } else {
-        //TODO: Sign out with MSAL
-        /* Call when signed out successfully
-            [self _setStatusText:[NSString stringWithFormat:@"Currently signed out"]];
-            [self _setButtonTextAndVisibilityForState:SIGNED_OUT];
-         /*
-        /* TODO: sign out with MSAL, this is if sign out fails
-         [self _setStatusText:[NSString stringWithFormat:@"MSA sign-out failed!"]];
-         */
+        //NOTE: Sign out is currently not supported in the MSAL library. See the issue here. The token can be removed from the cache but that is not being shown.
+        //https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/issues/589
     }
 }
 

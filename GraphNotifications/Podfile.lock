@@ -1,9 +1,4 @@
 PODS:
-  - ADAL (2.6.6):
-    - ADAL/app-lib (= 2.6.6)
-  - ADAL/app-lib (2.6.6):
-    - ADAL/tokencacheheader
-  - ADAL/tokencacheheader (2.6.6)
   - AdaptiveCards (1.2.5)
   - AFNetworking (3.2.1):
     - AFNetworking/NSURLSession (= 3.2.1)
@@ -26,6 +21,9 @@ PODS:
     - JSONModel (~> 1.2)
   - ISO8601 (0.6.0)
   - JSONModel (1.8.0)
+  - MSAL (1.0.5):
+    - MSAL/app-lib (= 1.0.5)
+  - MSAL/app-lib (1.0.5)
   - PromiseKit (6.12.0):
     - PromiseKit/CorePromise (= 6.12.0)
     - PromiseKit/Foundation (= 6.12.0)
@@ -37,30 +35,30 @@ PODS:
     - PromiseKit/CorePromise
 
 DEPENDENCIES:
-  - ADAL (= 2.6.6)
   - AdaptiveCards
   - GraphNotificationsLibrary (~> 0.0.6)
+  - MSAL
   - PromiseKit
 
 SPEC REPOS:
   trunk:
-    - ADAL
     - AdaptiveCards
     - AFNetworking
     - GraphNotificationsLibrary
     - ISO8601
     - JSONModel
+    - MSAL
     - PromiseKit
 
 SPEC CHECKSUMS:
-  ADAL: 19833152e389108a06e556587b7704a32341edae
   AdaptiveCards: 01205fc39964c154177fc86fb5876cfdd9bcce76
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   GraphNotificationsLibrary: 541cb0b6a97ae9c48cb108d461b967b91d3bf385
   ISO8601: d3ea3ba9b752820cf92c6b47a9ee327e9f0e13fc
   JSONModel: 02ab723958366a3fd27da57ea2af2113658762e9
+  MSAL: 74bf430ec0f46dd4c79dde2596e2b553610ccab1
   PromiseKit: c06835ba442ce5454ce3cdde470232804a6e4ff8
 
-PODFILE CHECKSUM: fcfebf56443086541727db6853821b55829ed4e3
+PODFILE CHECKSUM: b1e963dfbee53639c2bb1e9d5f014b39e14826a1
 
 COCOAPODS: 1.8.4

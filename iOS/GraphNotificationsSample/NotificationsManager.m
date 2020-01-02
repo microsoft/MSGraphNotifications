@@ -5,7 +5,7 @@
 #import "NotificationsManager.h"
 #import <UserNotifications/UserNotifications.h>
 #import "Secrets.h"
-#import "APNSToken.h"
+#import "GlobalApnsToken.h"
 
 @implementation NotificationsManager {
     NSMutableArray<UserNotification*>* _notifications;
@@ -99,7 +99,7 @@
         _listenerMap = [NSMutableDictionary dictionary];
         _userNotificationApi =  [[UserNotificationApi alloc] init];
         [_userNotificationApi setOAuthAccessToken:accountId];
-        [_userNotificationApi subscribeToUserNotificationsAsync:[[APNSToken accessToken] getAccessToken] appPackageNameForPushPlatform:APP_HOST_NAME appDisplayNameForUnsAnalytics:@"GraphNotificationsSample" completionHandler:^(UserNotificationSubscriptionResult * result) {
+        [_userNotificationApi subscribeToUserNotificationsAsync:[GlobalApnsToken apnsDeviceToken] appPackageNameForPushPlatform:APP_HOST_NAME appDisplayNameForUnsAnalytics:@"GraphNotificationsSample" completionHandler:^(UserNotificationSubscriptionResult * result) {
             if(result.getStatus==SUCCEEDED)
             {
                 NSLog(@"Registered for remote notifications successfully");

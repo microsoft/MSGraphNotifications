@@ -28,23 +28,13 @@ typedef NS_ENUM(NSInteger, LoginState) {
     
     if (state == SIGNED_OUT) {
         [self _setStatusText:@"Signing in MSA..."];
-        NSError* msalError = [[NSError alloc] init];
-        MSALAuthority* authority = [MSALAuthority authorityWithURL:[NSURL URLWithString:@"https://login.microsoftonline.com/consumers/"] error:&msalError];
-        MSALPublicClientApplicationConfig *config = [[MSALPublicClientApplicationConfig alloc] initWithClientId:MSA_CLIENT_ID];
-        NSArray<NSString *> *scopes = @[@"https://activity.microsoft.com/UserActivity.ReadWrite.CreatedByApp", @"https://activity.microsoft.com/Notifications.ReadWrite.CreatedByApp"];
-        MSALWebviewParameters* params = [[MSALWebviewParameters alloc] initWithParentViewController:self];
-        MSALPublicClientApplication *application = [[MSALPublicClientApplication alloc] initWithConfiguration:config error:&msalError];
-        MSALInteractiveTokenParameters *interactiveParams = [[MSALInteractiveTokenParameters alloc] initWithScopes:scopes webviewParameters:params];
-        interactiveParams.authority = authority;
-        interactiveParams.promptType = MSALPromptTypeSelectAccount;
-        
-        [application acquireTokenWithParameters:interactiveParams completionBlock:^(MSALResult *result, NSError *error) {
+        [self loginInternal:MSA finishBlock:^(NSError *error, NSString* accessToken) {
             if (!error)
             {
                 // You'll want to get the account identifier to retrieve and reuse the account
                 // for later acquireToken calls
                 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                appDelegate.manager = [appDelegate.manager initWithAccount:result.accessToken];
+                appDelegate.manager = [appDelegate.manager initWithAccount:accessToken];
                 if(appDelegate.manager)
                 {
                     [self _setButtonTextAndVisibilityForState:MSA];
@@ -66,6 +56,43 @@ typedef NS_ENUM(NSInteger, LoginState) {
     }
 }
 
+-(void)loginInternal:(LoginState)accountToLogin finishBlock:(void (^)(NSError* error, NSString* accessToken))finishBlock
+{
+    NSError* msalError = [[NSError alloc] init];
+    MSALAuthority* authority;
+    MSALPublicClientApplicationConfig *config;
+    NSArray<NSString *> *scopes;
+    if(accountToLogin==AAD)
+    {
+        authority = [MSALAuthority authorityWithURL:[NSURL URLWithString:@"https://login.microsoftonline.com/common/oauth2"] error:&msalError];
+        config = [[MSALPublicClientApplicationConfig alloc] initWithClientId:APPLICATION_CLIENT_ID];
+        scopes = @[@"https://activity.microsoft.com/UserActivity.ReadWrite.CreatedByApp", @"https://activity.microsoft.com/Notifications.ReadWrite.CreatedByApp"];
+    }
+    else if(accountToLogin==MSA)
+    {
+        authority = [MSALAuthority authorityWithURL:[NSURL URLWithString:@"https://login.microsoftonline.com/consumers/"] error:&msalError];
+        config = [[MSALPublicClientApplicationConfig alloc] initWithClientId:APPLICATION_CLIENT_ID];
+        scopes = @[@"https://activity.windows.com/UserActivity.ReadWrite.CreatedByApp", @"https://activity.windows.com/Notifications.ReadWrite.CreatedByApp"];
+    }
+    
+    MSALWebviewParameters* params = [[MSALWebviewParameters alloc] initWithParentViewController:self];
+    MSALPublicClientApplication *application = [[MSALPublicClientApplication alloc] initWithConfiguration:config error:&msalError];
+    MSALInteractiveTokenParameters *interactiveParams = [[MSALInteractiveTokenParameters alloc] initWithScopes:scopes webviewParameters:params];
+    interactiveParams.authority = authority;
+    interactiveParams.promptType = MSALPromptTypeSelectAccount;
+    [application acquireTokenWithParameters:interactiveParams completionBlock:^(MSALResult *result, NSError *error) {
+        if (!error)
+        {
+            finishBlock(nil, result.accessToken);
+        }
+        else
+        {
+            finishBlock(error, nil);
+        }
+    }];
+
+}
+
 - (IBAction)loginAAD {
     LoginState state = [self _getState];
 
@@ -73,7 +100,7 @@ typedef NS_ENUM(NSInteger, LoginState) {
         [self _setStatusText:@"Signing in AAD..."];
         NSError* msalError = [[NSError alloc] init];
         MSALAuthority* authority = [MSALAuthority authorityWithURL:[NSURL URLWithString:@"https://login.microsoftonline.com/common/oauth2"] error:&msalError];
-        MSALPublicClientApplicationConfig *config = [[MSALPublicClientApplicationConfig alloc] initWithClientId:AAD_CLIENT_ID];
+        MSALPublicClientApplicationConfig *config = [[MSALPublicClientApplicationConfig alloc] initWithClientId:APPLICATION_CLIENT_ID];
         NSArray<NSString *> *scopes = @[@"https://activity.microsoft.com/UserActivity.ReadWrite.CreatedByApp", @"https://activity.microsoft.com/Notifications.ReadWrite.CreatedByApp"];
         MSALWebviewParameters* params = [[MSALWebviewParameters alloc] initWithParentViewController:self];
         MSALPublicClientApplication *application = [[MSALPublicClientApplication alloc] initWithConfiguration:config error:&msalError];

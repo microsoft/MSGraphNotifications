@@ -17,8 +17,7 @@
 		00823375212F114B0055F6E4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 00823374212F114B0055F6E4 /* main.m */; };
 		00D6D060213720E5008E5E33 /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00D6D05F213720E5008E5E33 /* NotificationsViewController.m */; };
 		232485673C6C2171E330D4C6 /* Pods_GraphNotificationsSample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11DF974EC8752FA5D016C967 /* Pods_GraphNotificationsSample.framework */; };
-		AE59AE8023B539E8000A04E7 /* UserNotificationApi.m in Sources */ = {isa = PBXBuildFile; fileRef = AE59AE7F23B539E8000A04E7 /* UserNotificationApi.m */; };
-		AE59AE8223B69590000A04E7 /* APNSToken.m in Sources */ = {isa = PBXBuildFile; fileRef = AE59AE8123B69590000A04E7 /* APNSToken.m */; };
+		AE59AE8223B69590000A04E7 /* GlobalApnsToken.m in Sources */ = {isa = PBXBuildFile; fileRef = AE59AE8123B69590000A04E7 /* GlobalApnsToken.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,10 +42,8 @@
 		63E3FBAFA254E6B80A8DA76E /* Pods-GraphNotifications.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GraphNotifications.release.xcconfig"; path = "Pods/Target Support Files/Pods-GraphNotifications/Pods-GraphNotifications.release.xcconfig"; sourceTree = "<group>"; };
 		913EB4AA217E75C700A78C79 /* Secrets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Secrets.h; sourceTree = "<group>"; };
 		9B6312F300B55978A0074729 /* libPods-GraphNotifications.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GraphNotifications.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		AE59AE7E23B539D9000A04E7 /* UserNotificationApi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserNotificationApi.h; sourceTree = "<group>"; };
-		AE59AE7F23B539E8000A04E7 /* UserNotificationApi.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserNotificationApi.m; sourceTree = "<group>"; };
-		AE59AE8123B69590000A04E7 /* APNSToken.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = APNSToken.m; sourceTree = "<group>"; };
-		AE59AE8323B6959D000A04E7 /* APNSToken.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APNSToken.h; sourceTree = "<group>"; };
+		AE59AE8123B69590000A04E7 /* GlobalApnsToken.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GlobalApnsToken.m; sourceTree = "<group>"; };
+		AE59AE8323B6959D000A04E7 /* GlobalApnsToken.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlobalApnsToken.h; sourceTree = "<group>"; };
 		D94FF25B740D15AF01A2530D /* Pods-GraphNotificationsSample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GraphNotificationsSample.release.xcconfig"; path = "Pods/Target Support Files/Pods-GraphNotificationsSample/Pods-GraphNotificationsSample.release.xcconfig"; sourceTree = "<group>"; };
 		E9737A60E31BEADDB7BDC7BE /* Pods-GraphNotificationsSample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GraphNotificationsSample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GraphNotificationsSample/Pods-GraphNotificationsSample.debug.xcconfig"; sourceTree = "<group>"; };
 		FFB1B176FF8985E5AD4B88D1 /* Pods-GraphNotifications.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GraphNotifications.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GraphNotifications/Pods-GraphNotifications.debug.xcconfig"; sourceTree = "<group>"; };
@@ -102,10 +99,8 @@
 				00D6D05E21372041008E5E33 /* NotificationsViewController.h */,
 				00D6D05F213720E5008E5E33 /* NotificationsViewController.m */,
 				913EB4AA217E75C700A78C79 /* Secrets.h */,
-				AE59AE7E23B539D9000A04E7 /* UserNotificationApi.h */,
-				AE59AE7F23B539E8000A04E7 /* UserNotificationApi.m */,
-				AE59AE8123B69590000A04E7 /* APNSToken.m */,
-				AE59AE8323B6959D000A04E7 /* APNSToken.h */,
+				AE59AE8123B69590000A04E7 /* GlobalApnsToken.m */,
+				AE59AE8323B6959D000A04E7 /* GlobalApnsToken.h */,
 			);
 			path = GraphNotificationsSample;
 			sourceTree = "<group>";
@@ -215,24 +210,24 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-GraphNotificationsSample/Pods-GraphNotificationsSample-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/ADAL/ADAL.framework",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${PODS_ROOT}/AdaptiveCards/AdaptiveCards.framework",
 				"${PODS_ROOT}/AdaptiveCards/AdaptiveCards.framework.dSYM",
 				"${PODS_ROOT}/GraphNotificationsLibrary/GraphNotificationsLibrary.framework",
 				"${BUILT_PRODUCTS_DIR}/ISO8601/ISO8601.framework",
 				"${BUILT_PRODUCTS_DIR}/JSONModel/JSONModel.framework",
+				"${BUILT_PRODUCTS_DIR}/MSAL/MSAL.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ADAL.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AdaptiveCards.framework",
 				"${DWARF_DSYM_FOLDER_PATH}/AdaptiveCards.framework.dSYM",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GraphNotificationsLibrary.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ISO8601.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSONModel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MSAL.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -266,10 +261,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				00823375212F114B0055F6E4 /* main.m in Sources */,
-				AE59AE8223B69590000A04E7 /* APNSToken.m in Sources */,
+				AE59AE8223B69590000A04E7 /* GlobalApnsToken.m in Sources */,
 				00823364212F114B0055F6E4 /* RootViewController.m in Sources */,
 				003421A921347622007FC970 /* NotificationsManager.m in Sources */,
-				AE59AE8023B539E8000A04E7 /* UserNotificationApi.m in Sources */,
 				00D6D060213720E5008E5E33 /* NotificationsViewController.m in Sources */,
 				00823367212F114B0055F6E4 /* LoginViewController.m in Sources */,
 				00823361212F114B0055F6E4 /* AppDelegate.m in Sources */,

@@ -5,7 +5,7 @@
 #import "AppDelegate.h"
 #import <GraphNotificationsLibrary/UserNotificationApi.h>
 #import <GraphNotificationsLibrary/UserNotification.h>
-#import "APNSToken.h"
+#import "GlobalApnsToken.h"
 @implementation AppDelegate {
     
 }
@@ -62,7 +62,7 @@
     NSLog(@"GraphNotificationsSample APNs token: %@", deviceTokenStr);
 
     @try {
-        [[APNSToken accessToken] setAccessToken:deviceTokenStr];
+        [GlobalApnsToken setGlobalApnsToken:deviceTokenStr];
     } @catch (NSException* exception) {
         NSLog(@"Failed to update notification registration with exception %@", exception);
     }

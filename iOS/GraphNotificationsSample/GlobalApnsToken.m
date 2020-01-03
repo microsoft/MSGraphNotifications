@@ -1,25 +1,23 @@
-//
-//  Copyright (c) Microsoft Corporation. All rights reserved.
-//
+//  Copyright (c) Microsoft. Licensed under the MIT license.
 
 
 
 #import <Foundation/Foundation.h>
 #import "GlobalApnsToken.h"
 @implementation GlobalApnsToken
-static NSString *g_apnsToken = 0;
+static NSString *apnsToken = 0;
 +(NSString *) apnsDeviceToken {
     @synchronized ([GlobalApnsToken class]) {
-        if (!g_apnsToken)
+        if (!apnsToken)
         {
-            g_apnsToken = [NSString string];
+            apnsToken = [NSString string];
         }
-        return g_apnsToken;
+        return apnsToken;
     }
 }
-+(void) setGlobalApnsToken:(NSString*)apnsToken
++(void) setApnsDeviceToken:(NSString*)apnsToken
 {
-    g_apnsToken = apnsToken;
+    apnsToken = apnsToken;
 }
 @end
 

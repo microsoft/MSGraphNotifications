@@ -1,6 +1,4 @@
-//
-//  Copyright (c) Microsoft Corporation. All rights reserved.
-//
+//  Copyright (c) Microsoft. Licensed under the MIT license.
 
 #import "LoginViewController.h"
 #import <MSAL/MSAL.h>
@@ -98,27 +96,17 @@ typedef NS_ENUM(NSInteger, LoginState) {
 
     if (state == SIGNED_OUT) {
         [self _setStatusText:@"Signing in AAD..."];
-        NSError* msalError = [[NSError alloc] init];
-        MSALAuthority* authority = [MSALAuthority authorityWithURL:[NSURL URLWithString:@"https://login.microsoftonline.com/common/oauth2"] error:&msalError];
-        MSALPublicClientApplicationConfig *config = [[MSALPublicClientApplicationConfig alloc] initWithClientId:APPLICATION_CLIENT_ID];
-        NSArray<NSString *> *scopes = @[@"https://activity.microsoft.com/UserActivity.ReadWrite.CreatedByApp", @"https://activity.microsoft.com/Notifications.ReadWrite.CreatedByApp"];
-        MSALWebviewParameters* params = [[MSALWebviewParameters alloc] initWithParentViewController:self];
-        MSALPublicClientApplication *application = [[MSALPublicClientApplication alloc] initWithConfiguration:config error:&msalError];
-        MSALInteractiveTokenParameters *interactiveParams = [[MSALInteractiveTokenParameters alloc] initWithScopes:scopes webviewParameters:params];
-        interactiveParams.authority = authority;
-        interactiveParams.promptType = MSALPromptTypeSelectAccount;
-        
-        [application acquireTokenWithParameters:interactiveParams completionBlock:^(MSALResult *result, NSError *error) {
+        [self loginInternal:AAD finishBlock:^(NSError *error, NSString* accessToken) {
             if (!error)
             {
                 // You'll want to get the account identifier to retrieve and reuse the account
                 // for later acquireToken calls
                 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                appDelegate.manager = [appDelegate.manager initWithAccount:result.accessToken];
+                appDelegate.manager = [appDelegate.manager initWithAccount:accessToken];
                 if(appDelegate.manager)
                 {
-                    [self _setButtonTextAndVisibilityForState:MSA];
-                    [self _setState:MSA];
+                    [self _setButtonTextAndVisibilityForState:AAD];
+                    [self _setState:AAD];
                 }
                 else
                 {
@@ -127,13 +115,14 @@ typedef NS_ENUM(NSInteger, LoginState) {
             }
             else
             {
-                [self _setStatusText:[NSString stringWithFormat:@"MSA sign-in failed with error %@", error]];
+                [self _setStatusText:[NSString stringWithFormat:@"AAD sign-in failed with error %@", error]];
             }
         }];
     } else {
         //NOTE: Sign out is currently not supported in the MSAL library. See the issue here. The token can be removed from the cache but that is not being shown.
         //https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/issues/589
     }
+
 }
 
 - (LoginState)_getState {

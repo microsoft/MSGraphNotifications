@@ -1,6 +1,5 @@
-//
-//  Copyright (c) Microsoft Corporation. All rights reserved.
-//
+//  Copyright (c) Microsoft. Licensed under the MIT license.
+
 
 #import <Foundation/Foundation.h>
 #import "NotificationsViewController.h"

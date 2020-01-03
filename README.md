@@ -1,24 +1,31 @@
-# Microsoft Graph notifications SDK
-Using the new and improved, lightweight Microsoft Graph notifications client SDK within your application, you can update the state of a notification and sync that state across all endpoints. With the client-side SDK, your app will initiate a subscription with the Microsoft Graph notification service.  This allows your app to start receiving notifications that are published by your application server & targeted at the currently signed-in user. The SDK then manages the notifications on the client side, including receiving new incoming notifications, managing the state of notifications for scenarios like universal dismiss, as well as retrieving full notification history.
+# Sample App for running the Microsoft Graph notifications client library in your iOS application
 
-> **Note:** The preview version of the Web SDK is now available and we welcome your feedback. The client SDKs for Windows, iOS and Android platforms are coming shortly so please check back soon for updates. In the meantime, you can alternatively target these platforms using the cross-device, [Project Rome SDK](https://developer.microsoft.com/en-us/windows/project-rome).
+## Getting Started
 
-## [Documentation wiki](https://github.com/microsoft/MSGraphNotifications/wiki)
-Learn more about how to use the Graph notifications client SDK here: https://github.com/microsoft/MSGraphNotifications/wiki
+### Prerequisites
 
-## Privacy
-See [Microsoft's privacy statement](https://privacy.microsoft.com/en-us/privacystatement/) for more information.
+1. Have xCode and Cocoapods installed installed. More details [here](https://cocoapods.org/)
 
-## Contributing
+### Building the sample
+1. ``pod install`` (from directory of podfile)
+2. ``build from xCode``
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+### Running the sample
+1. Build the sample (if is not built already).
+1. Initialize and setup MSAL using the directions given [here](https://github.com/AzureAD/microsoft-authentication-library-for-objc) 
+1. Set the following values:
+- ``APPLICATION_CLIENT_ID`` in Secrets.h: this is the client ID of your Azure AD client app
+- ``APP_HOST_NAME`` in secrets.h: this is the "cross-device domain name" that you have registered
+and verified in your Cross-Device App registration in Partner Center (https://partner.microsoft.com/dashboard )
+2. Sign in with an Azure AD or MSA account.
+3. Click Subscribe, then grant permissions for the iOS app to read and write notifications.
+4. Click the other buttons to exercise the various functions.
+5. Post a new notification from Graph explorer and see a notification popup. Click the popup to be redirected to https://docs.microsoft.com/en-us/graph/notifications-concept-overview
+## Other tips
 
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+1. Getting duplicate push notifications? This is a known server-side issue in some cases.
+See the [README for the client itself](https://www.npmjs.com/package/@microsoft/user-notifications-client) to learn more. Look for the text starting with:
+> userNotificationApiImpl.processPushNotificationAsync(notificationPayload) may call back to the Graph notification server to fetch notification data
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+1. To look at the logs of the sample app and the client library, the best way to do it is to set the xCode environment variable
+    ``CFNETWORK_DIAGNOSTICS`` = 3

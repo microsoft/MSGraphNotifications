@@ -12,15 +12,16 @@
 
 ### Running the sample
 1. Build the sample (if is not built already).
-1. Initialize and setup MSAL using the directions given [here](https://github.com/AzureAD/microsoft-authentication-library-for-objc) 
-1. Set the following values:
+2. Initialize and setup MSAL using the directions given [here](https://github.com/AzureAD/microsoft-authentication-library-for-objc) 
+3. Set the following values:
 - ``APPLICATION_CLIENT_ID`` in Secrets.h: this is the client ID of your Azure AD client app
 - ``APP_HOST_NAME`` in secrets.h: this is the "cross-device domain name" that you have registered
 and verified in your Cross-Device App registration in Partner Center (https://partner.microsoft.com/dashboard )
-2. Sign in with an Azure AD or MSA account.
-3. Click Subscribe, then grant permissions for the iOS app to read and write notifications.
-4. Click the other buttons to exercise the various functions.
-5. Post a new notification from Graph explorer and see a notification popup. Click the popup to be redirected to https://docs.microsoft.com/en-us/graph/notifications-concept-overview
+4. Rebuild the application so that these secrets are used when attempting to log in and subscribe to notifications. 
+5. Sign in with an Azure AD or MSA account.
+6. Click Subscribe, then grant permissions for the iOS app to read and write notifications.
+7. Click the other buttons to exercise the various functions.
+8. Post a new notification from Graph explorer and see a notification popup. Click the popup to be redirected to https://docs.microsoft.com/en-us/graph/notifications-concept-overview
 ## Other tips
 
 1. Getting duplicate push notifications? This is a known server-side issue in some cases.

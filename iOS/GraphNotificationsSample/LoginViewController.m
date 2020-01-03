@@ -49,8 +49,10 @@ typedef NS_ENUM(NSInteger, LoginState) {
             }
         }];
     } else {
-        //NOTE: Sign out is currently not supported in the MSAL library. See the issue here. The token can be removed from the cache but that is not being shown.
-        //https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/issues/589
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [[appDelegate.manager userNotificationApi] setOAuthAccessToken:nil];
+        [self _setButtonTextAndVisibilityForState:SIGNED_OUT];
+        //MSAL does not have an invalidate/remove token, so we just make the access token nil so calls will fail if logged out. This is equivalent to signing out.
     }
 }
 
@@ -119,8 +121,10 @@ typedef NS_ENUM(NSInteger, LoginState) {
             }
         }];
     } else {
-        //NOTE: Sign out is currently not supported in the MSAL library. See the issue here. The token can be removed from the cache but that is not being shown.
-        //https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/issues/589
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [[appDelegate.manager userNotificationApi] setOAuthAccessToken:nil];
+        [self _setButtonTextAndVisibilityForState:SIGNED_OUT];
+        //MSAL does not have an invalidate/remove token, so we just make the access token nil so calls will fail if logged out. This is equivalent to signing out.
     }
 
 }

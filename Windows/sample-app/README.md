@@ -33,7 +33,7 @@ application you can [register and run it from an unpackaged binary
 1. Navigate to the Notifications tab and click the "Refresh History" button to display
    a history of past notifications.
 1. Exercise the various functions offered for each notification in the history.
-1. Post a new notification from Graph explorer. You won't see a notification popup
+1. Post a new notification from Graph explorer. You might not see a notification popup
    immediately, but if you click "Refresh History" then it will appear.
 
 ## Other tips

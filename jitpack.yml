@@ -1,3 +1,3 @@
 install:
 - FILE="-Dfile=graphnotificationslibrary-debug.aar"
-- mvn install:install-file $FILE -DgroupId=com.github.microsoft -DartifactId=MSGraphNotifications -Dversion=1.0 -Dpackaging=aar -DpomFile=pom.xml
+- mvn install:install-file $FILE -DgroupId=com.github.microsoft -DartifactId=MSGraphNotifications -Dversion=1.0 -Dpackaging=aar -DgeneratePom=true
